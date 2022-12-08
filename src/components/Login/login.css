@@ -19,59 +19,53 @@ body {
 }
 
 .loginForm {
+    width: 45%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     margin-top: 30px;
     background-color: #08295e;
-    padding: 35px 150px;
+    padding: 35px 70px;
     border-radius: 15px;
 }
 
-.loginForm>input {
-    margin: 10px;
+.myinp{
+    padding: 2px 32px ;
+    margin-bottom: 25px;
+}
+
+.myinp div{
+    position: absolute;
+    padding: 10px 4px;
+    
+}
+.myinp input{
     width: 100%;
+    background-color: #153973;
+    padding-left: 30px;
     line-height: 2.7rem;
     border-radius: 5px;
     border: none;
-    padding: 2px 32px !important;
-    background-image: url(../../Assets/Icons/user.png) no-repeat scroll 7px 12px !important;
-    background-color: #153973;
-    background-size: 20px;
 }
 
-
-.loginForm>input::placeholder {
+.loginForm input::placeholder {
     color: #98c2be;
 }
 
-#password_input{
-    margin: 10px;
+.loginForm button {
+    margin: 10px auto;
+    margin-top: 0px;
     width: 100%;
     line-height: 2.7rem;
     border-radius: 5px;
     border: none;
-    padding: 2px 32px;
-    background-image: url(../../Assets/Icons/password.png) no-repeat scroll 7px 12px;
-    background-size: 20px;
-    background-color: #153973;
-    background-size: 20px;
-}
-
-.loginForm>button {
-    margin: 10px;
-    width: 100%;
-    line-height: 2.7rem;
-    border-radius: 5px;
-    border: none;
-    padding: 2px 3px;
     background-color: #e0e438;
     color: #08295e;
     font-size: 1rem;
     font-weight: bolder;
 }
 
-button:hover {
+.loginForm button:hover {
     cursor: pointer;
     background-color: #c9cc2c;
 }
@@ -82,8 +76,8 @@ button:hover {
     font-size: small;
 }
 
-input:-webkit-autofill {
-    background-image: url(../../Assets/Icons/password.png) no-repeat scroll 7px 12px;
+.buttonDiv{
+    display: flex;
     padding: 2px 32px;
 }
 
@@ -93,17 +87,29 @@ input:-webkit-autofill {
 } */
 
 @media only screen and (min-width:300px) and (max-width:550px){
+    .loginContainer{
+        margin: 20px auto;
+    }
     .loginForm {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         padding: 15px 30px;
         width: 80%;
     }
 
-    .loginForm > input,#password_input {
+    .loginForm .myinp {
         width: 90%;
     }
 
-    .loginForm button{
+    .buttonDiv{
         width: 90%;
+        display: flex;
+        padding: 2px 32px;
+    }
+
+    .loginForm button{
+        width: 100%;
     }
     
 }

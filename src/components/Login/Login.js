@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import './login.css'
+import userLogo from '../../Assets/Icons/user.png'
+import passLogo from '../../Assets/Icons/password.png'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -26,7 +28,7 @@ const Login = () => {
         const EmailRegex = new RegExp('^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$')
         if (!values.user_id) {
             errors.user_id = 'user name or email required'
-        }else if (!EmailRegex.test(values.mobile_number)) {
+        } else if (!EmailRegex.test(values.mobile_number)) {
             errors.email_id = "Invalid email format"
         }
 
@@ -50,17 +52,17 @@ const Login = () => {
         setFormErrors(validate(loginValues))
         setIsSubmit(true)
 
-        const data={'login_id':loginValues.user_id,'password':loginValues.password}
-        const API_DATA= JSON.stringify(data)
+        const data = { 'login_id': loginValues.user_id, 'password': loginValues.password }
+        const API_DATA = JSON.stringify(data)
         console.log(API_DATA);
 
-        axios.post('https://react-tasks-nodejs-api.herokuapp.com/user/login',API_DATA,{ headers: { api_key: 'Z9Q7WKEY7ORGBUFGN3EG1QS5Y7FG8DU29GHKKSZH' } })
-        .then(res=>{
-            console.log(res)
-        })
-        .catch(err=>{
-            console.log(err);
-        })
+        axios.post('https://react-tasks-nodejs-api.herokuapp.com/user/login', API_DATA, { headers: { api_key: 'Z9Q7WKEY7ORGBUFGN3EG1QS5Y7FG8DU29GHKKSZH' } })
+            .then(res => {
+                console.log(res)
+            })
+            .catch(err => {
+                console.log(err);
+            })
 
     }
 
@@ -76,11 +78,21 @@ const Login = () => {
             </div>
 
             <form action="" className='loginForm' autoComplete="off">
-                <input type="text" name="user_id" id="" placeholder='User name or Email' value={loginValues.user_id} onChange={(e) => handleChange(e)} />
-                <p>{formErrors.user_id}</p>
-                <input id='password_input' type="password" name="password" placeholder='Password' value={loginValues.password} onChange={(e) => handleChange(e)} />
-                <p>{formErrors.password}</p>
-                <button onClick={(e) => handleLogin(e)}>Sign in</button>
+                <div style={{ display: 'flex', flexDirection: 'column' }} className='myinp'>
+                    <div><img style={{ width: '20px' }} src={userLogo} alt="" /></div>
+                    <input type="text" name="user_id" id="" placeholder='User name or Email' value={loginValues.user_id} onChange={(e) => handleChange(e)} />
+                    <p>{formErrors.user_id}</p>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column' }} className='myinp'>
+                    <div><img style={{ width: '20px' }} src={passLogo} alt="" /></div>
+                    <input id='password_input' type="password" name="password" placeholder='Password' value={loginValues.password} onChange={(e) => handleChange(e)} />
+                    <p>{formErrors.password}</p>
+                </div>
+
+                <div className='buttonDiv'>
+                    <button onClick={(e) => handleLogin(e)}>Sign in</button>
+                </div>
                 <Link to='/register'>Register</Link>
             </form>
 
