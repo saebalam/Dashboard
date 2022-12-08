@@ -34,8 +34,8 @@ body {
     line-height: 2.7rem;
     border-radius: 5px;
     border: none;
-    padding: 2px 32px;
-    background-image: url(../../Assets/Icons/user.png) no-repeat scroll 7px 12px;
+    padding: 2px 32px !important;
+    background-image: url(../../Assets/Icons/user.png) no-repeat scroll 7px 12px !important;
     background-color: #153973;
     background-size: 20px;
 }
