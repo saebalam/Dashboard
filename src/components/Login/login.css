@@ -5,27 +5,29 @@
     color: white;
 }
 
+
 .loginContainer {
+   
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 30px;
+    margin-top: 15vh;
 }
 
 body {
-    width: 100vw;
-    height: 100vh;
+    /* width: 100vw;
+    height: 100vh; */
     background-color: #001941;
 }
 
 .loginForm {
-    width: 45%;
+    width: 35%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     margin-top: 30px;
     background-color: #08295e;
-    padding: 35px 70px;
+    padding: 40px 3vw;
     border-radius: 15px;
 }
 
@@ -81,14 +83,9 @@ body {
     padding: 2px 32px;
 }
 
-/* input:-webkit-autofill {
-    background: url(../../Assets/Icons/password.png) no-repeat scroll 7px 12px;
-    padding: 2px 32px;
-} */
-
-@media only screen and (min-width:300px) and (max-width:550px){
+@media only screen and (min-width:200px) and (max-width:600px){
     .loginContainer{
-        margin: 20px auto;
+        margin: 15vh auto;
     }
     .loginForm {
         display: flex;

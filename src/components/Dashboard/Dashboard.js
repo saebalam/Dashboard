@@ -1,8 +1,12 @@
+
 import React from 'react'
 import './dashboard.css'
+import { useParams } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 
 const Dashboard = () => {
+    const myresdata=useParams().resdata
+    console.log('message',{myresdata})
     return (
         <div>
             <Helmet>
@@ -29,14 +33,7 @@ const Dashboard = () => {
                         <td>9876543210</td>
                         <td>BCDT456YT</td>
                     </tr>
-                    <tr>
-                        <td>Saeb Alam</td>
-                        <td>alam_sa</td>
-                        <td>India</td>
-                        <td>test@test.com</td>
-                        <td>9876543210</td>
-                        <td>BCDT456YT</td>
-                    </tr>
+                    
                 </tbody>
             </table>
         </div>
@@ -44,3 +41,5 @@ const Dashboard = () => {
 }
 
 export default Dashboard
+
+

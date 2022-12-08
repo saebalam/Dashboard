@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route, Outlet, Link } from 'react-rout
 import Login from './components/Login/Login';
 import Register from './components/Register/Register';
 import Dashboard from './components/Dashboard/Dashboard';
+import ErrorPage from './components/ErrorPage';
 
 function App() {
 
@@ -20,7 +21,7 @@ function App() {
         <Routes>
           <Route exact path='/' element={<Login />} />
           <Route exact path='/register' element={<Register />} />
-          <Route exact path='/dashboard' element={<Dashboard />} />
+          <Route exact path='/dashboard/:resdata' element={<Dashboard />} />
         </Routes>
       </Router>
     </div>
@@ -28,3 +29,4 @@ function App() {
 }
 
 export default App;
+

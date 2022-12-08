@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { Helmet } from 'react-helmet'
 
-const Login = () => {
+const Register = () => {
 
     const [registerValues, setRegisterValues] = useState(
         {
@@ -14,7 +14,7 @@ const Login = () => {
             "email_id": "",
             "country_row_id": "",
             "mobile_number": "",
-            "Password": ""
+            "password": ""
         }
     )
 
@@ -29,20 +29,15 @@ const Login = () => {
     const validate = (values) => {
         const errors = {}
         const passRegex = new RegExp('^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$');
-        const mobRegex = new RegExp('/^\d{10}$')
+        const mobRegex = new RegExp('^[789]\d{9}$')
         const EmailRegex = new RegExp('^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$')
 
         if (!values.full_name) {
             errors.full_name = "can't be empty"
-        } else if (errors.full_name.length < 5) {
-            errors.full_name = "can't be less than 3 characters"
-        }
-
+        } 
         if (!values.username) {
             errors.username = "Please provide user name"
-        } else if (errors.username.length < 5) {
-            errors.username = "can't be less than 5 characters"
-        }
+        } 
 
         if (!values.country_row_id) {
             errors.country_row_id = "can't be empty"
@@ -50,21 +45,14 @@ const Login = () => {
 
         if (!values.mobile_number) {
             errors.mobile_number = "Number can't be empty"
-        } else if (!mobRegex.test(values.mobile_number)) {
-            errors.mobile_number = "Invalid mobile number"
-        }
-
+        } 
         if (!values.email_id) {
             errors.email_id = 'email required'
-        } else if (!EmailRegex.test(values.mobile_number)) {
-            errors.email_id = "Invalid email id"
-        }
+        } 
 
         if (!values.password) {
             errors.password = 'password required'
-        } else if (!passRegex.test(values.password)) {
-            errors.password = password_criteria
-        }
+        } 
 
         return errors
     }
@@ -102,7 +90,7 @@ const Login = () => {
                 <p>{formErrors.mobile_number}</p>
                 <input type="email" name="email_id" id="" placeholder='Email ID *' value={registerValues.email_id} onChange={(e) => handleChange(e)} />
                 <p>{formErrors.email_id}</p>
-                <input type="Password" name="password" id="" placeholder='Password *' value={registerValues.Password} onChange={(e) => handleChange(e)} />
+                <input type="password" name="password" id="" placeholder='Password *' value={registerValues.password} onChange={(e) => handleChange(e)} />
                 <p>{formErrors.password}</p>
                 <input type="text" name="referral_id" id="" placeholder='Referral ID' value={registerValues.referral_id} onChange={(e) => handleChange(e)} />
 
@@ -114,6 +102,6 @@ const Login = () => {
     )
 }
 
-export default Login
+export default Register
 
 

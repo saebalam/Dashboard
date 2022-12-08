@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import './login.css'
 import userLogo from '../../Assets/Icons/user.png'
 import passLogo from '../../Assets/Icons/password.png'
-import { Link } from 'react-router-dom'
+import { Link,useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
@@ -17,7 +17,7 @@ const Login = () => {
 
     const [formErrors, setFormErrors] = useState({})
     const [isSubmit, setIsSubmit] = useState(false)
-
+    const nav=useNavigate();
     //handle input box
     const handleChange = (e) => {
         setLoginValues({ ...loginValues, [e.target.name]: e.target.value })
@@ -51,14 +51,20 @@ const Login = () => {
         e.preventDefault()
         setFormErrors(validate(loginValues))
         setIsSubmit(true)
+        console.log(loginValues.user_id)
 
         const data = { 'login_id': loginValues.user_id, 'password': loginValues.password }
         const API_DATA = JSON.stringify(data)
         console.log(API_DATA);
 
-        axios.post('https://react-tasks-nodejs-api.herokuapp.com/user/login', API_DATA, { headers: { api_key: 'Z9Q7WKEY7ORGBUFGN3EG1QS5Y7FG8DU29GHKKSZH' } })
+        axios.post('https://lobster-app-ddwng.ondigitalocean.app/user/login', API_DATA, { headers: { api_key: 'Z9Q7WKEY7ORGBUFGN3EG1QS5Y7FG8DU29GHKKSZH' } })
             .then(res => {
-                console.log(res)
+                console.log(res.status)
+                if(res.status==200){
+                    console.log('res',res)
+                    const resdata={res}
+                    nav(`/dashboard/${resdata}`)
+                }
             })
             .catch(err => {
                 console.log(err);
@@ -101,5 +107,3 @@ const Login = () => {
 }
 
 export default Login
-
-
