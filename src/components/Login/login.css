@@ -1,0 +1,99 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    color: white;
+}
+
+.loginContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    background-color: #001941;
+}
+
+.loginForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 30px;
+    background-color: #08295e;
+    padding: 35px 150px;
+    border-radius: 15px;
+}
+
+.loginForm>input {
+    margin: 10px;
+    width: 100%;
+    line-height: 2.7rem;
+    border-radius: 5px;
+    border: none;
+    padding: 2px 32px;
+    background: url(../../Assets/Icons/user.png) no-repeat scroll 7px 12px;
+    background-color: #153973;
+    background-size: 20px;
+}
+
+
+.loginForm>input::placeholder {
+    color: #98c2be;
+}
+
+#password_input{
+    margin: 10px;
+    width: 100%;
+    line-height: 2.7rem;
+    border-radius: 5px;
+    border: none;
+    padding: 2px 32px;
+    background: url(../../Assets/Icons/password.png) no-repeat scroll 7px 12px;
+    background-size: 20px;
+    background-color: #153973;
+    background-size: 20px;
+}
+
+.loginForm>button {
+    margin: 10px;
+    width: 100%;
+    line-height: 2.7rem;
+    border-radius: 5px;
+    border: none;
+    padding: 2px 3px;
+    background-color: #e0e438;
+    color: #08295e;
+    font-size: 1rem;
+    font-weight: bolder;
+}
+
+button:hover {
+    cursor: pointer;
+    background-color: #c9cc2c;
+}
+
+.loginForm p{
+    color: 	#ff3333;
+    text-align:'left';
+    font-size: small;
+}
+
+@media only screen and (min-width:300px) and (max-width:550px){
+    .loginForm {
+        padding: 15px 30px;
+        width: 80%;
+    }
+
+    .loginForm > input,#password_input {
+        width: 90%;
+    }
+
+    .loginForm button{
+        width: 90%;
+    }
+    
+}

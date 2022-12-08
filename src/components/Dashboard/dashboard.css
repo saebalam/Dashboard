@@ -1,0 +1,26 @@
+table{
+    color: black;
+    margin: 70px auto;
+    background-color: white;
+    border-collapse: collapse;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    /* min-width: 400px; */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+
+}
+
+
+thead td {
+    padding: 5px;
+    border-radius: 5px; 
+}
+thead th{
+    background-color: #362f4b;
+    padding: 10px 20px;
+}
+
+tbody td{
+    color: black;
+    padding: 10px 25px;
+}
