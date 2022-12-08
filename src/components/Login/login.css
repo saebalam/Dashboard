@@ -35,7 +35,7 @@ body {
     border-radius: 5px;
     border: none;
     padding: 2px 32px;
-    background: url(../../Assets/Icons/user.png) no-repeat scroll 7px 12px;
+    background-image: url(../../Assets/Icons/user.png) no-repeat scroll 7px 12px;
     background-color: #153973;
     background-size: 20px;
 }
@@ -52,7 +52,7 @@ body {
     border-radius: 5px;
     border: none;
     padding: 2px 32px;
-    background: url(../../Assets/Icons/password.png) no-repeat scroll 7px 12px;
+    background-image: url(../../Assets/Icons/password.png) no-repeat scroll 7px 12px;
     background-size: 20px;
     background-color: #153973;
     background-size: 20px;
@@ -81,6 +81,16 @@ button:hover {
     text-align:'left';
     font-size: small;
 }
+
+input:-webkit-autofill {
+    background-image: url(../../Assets/Icons/password.png) no-repeat scroll 7px 12px;
+    padding: 2px 32px;
+}
+
+/* input:-webkit-autofill {
+    background: url(../../Assets/Icons/password.png) no-repeat scroll 7px 12px;
+    padding: 2px 32px;
+} */
 
 @media only screen and (min-width:300px) and (max-width:550px){
     .loginForm {
