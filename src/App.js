@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import { Helmet } from 'react-helmet';
 
@@ -21,7 +20,8 @@ function App() {
         <Routes>
           <Route exact path='/' element={<Login />} />
           <Route exact path='/register' element={<Register />} />
-          <Route exact path='/dashboard/:resdata' element={<Dashboard />} />
+          <Route exact path='/dashboard' element={<Dashboard  />} />
+          <Route exact path='*' element={<ErrorPage />} />
         </Routes>
       </Router>
     </div>
@@ -29,4 +29,3 @@ function App() {
 }
 
 export default App;
-

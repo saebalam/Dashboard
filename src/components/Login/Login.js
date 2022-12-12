@@ -1,77 +1,72 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import './login.css'
 import userLogo from '../../Assets/Icons/user.png'
 import passLogo from '../../Assets/Icons/password.png'
-import { Link,useNavigate } from 'react-router-dom'
+import { Link, useNavigate, Navigate } from 'react-router-dom'
 import axios from 'axios'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser } from '@fortawesome/free-solid-svg-icons'
+import { useFormik } from 'formik'
 import { Helmet } from 'react-helmet';
+
+const validate = values => {
+    const errors = {};
+
+    if (!values.user_id) {
+        errors.user_id = 'username or email is required';
+    }
+    if (!values.password) {
+        errors.password = 'Password cannot be empty'
+    } 
+
+    return errors;
+};
 
 const Login = () => {
 
-    const [loginValues, setLoginValues] = useState({
-        'user_id': '',
-        'password': ''
+    const navigate = useNavigate();
+
+    const formik = useFormik({
+        initialValues: {
+            user_id: '',
+            password: ''
+        },
+        validate,
+        onSubmit: values => {
+            alert(JSON.stringify(values, null, 2))
+        }
     })
-
-    const [formErrors, setFormErrors] = useState({})
-    const [isSubmit, setIsSubmit] = useState(false)
-    const nav=useNavigate();
-    //handle input box
-    const handleChange = (e) => {
-        setLoginValues({ ...loginValues, [e.target.name]: e.target.value })
-    }
-
-    const validate = (values) => {
-        const errors = {}
-        const EmailRegex = new RegExp('^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$')
-        if (!values.user_id) {
-            errors.user_id = 'user name or email required'
-        } else if (!EmailRegex.test(values.mobile_number)) {
-            errors.email_id = "Invalid email format"
-        }
-
-        if (!values.password) {
-            errors.password = 'password cannot be empty'
-        }
-
-        return errors
-    }
-
-    //variable for password error div
-    const password_criteria = <div style={{ display: 'text', flexDirection: 'column', alignItems: 'flex-start', paddingLeft: '10px' }}>
-        <p >* Must contain 8 characters</p>
-        <p >* Atleast 1 letter and 1 number</p>
-        <p >* Atleast 1 special character</p></div>
-
 
     //handling Login form on submit button
     const handleLogin = (e) => {
         e.preventDefault()
-        setFormErrors(validate(loginValues))
-        setIsSubmit(true)
-        console.log(loginValues.user_id)
 
-        const data = { 'login_id': loginValues.user_id, 'password': loginValues.password }
-        const API_DATA = JSON.stringify(data)
-        console.log(API_DATA);
+        const data = { 'login_id': formik.values.user_id, 'password': formik.values.password }
 
-        axios.post('https://lobster-app-ddwng.ondigitalocean.app/user/login', API_DATA, { headers: { api_key: 'Z9Q7WKEY7ORGBUFGN3EG1QS5Y7FG8DU29GHKKSZH' } })
+        axios.post('https://lobster-app-ddwng.ondigitalocean.app/user/login', data, { headers: { api_key: 'Z9Q7WKEY7ORGBUFGN3EG1QS5Y7FG8DU29GHKKSZH' } })
             .then(res => {
                 console.log(res.status)
-                if(res.status==200){
-                    console.log('res',res)
-                    const resdata={res}
-                    nav(`/dashboard/${resdata}`)
+                if (res.status == 200) {
+                    // localStorage.setItem('token',res.data.message.token)
+                    const resdata = { 'full_name': res.data.message.email_id, 'user_name': res.data.message.username }
+                    if (res.data.status == true) {
+                        navigate("/dashboard", {
+                            state: {
+                                'full_name': res.data.message.full_name,
+                                'user_name': res.data.message.username,
+                                'country_row_id': res.data.message.country_row_id,
+                                'email_id': res.data.message.email_id,
+                                'mobile_number': res.data.message.mobile_number,
+                                'referral_id': res.data.message.referral_username,
+                            }
+                        });
+                    } else {
+                        alert(res.data.message.alert_message)
+                    }
                 }
             })
             .catch(err => {
                 console.log(err);
             })
-
     }
-
 
     return (
         <div className='loginContainer'>
@@ -83,25 +78,24 @@ const Login = () => {
                 <p style={{ fontSize: '0.8rem' }}>Enter your account login details</p>
             </div>
 
-            <form action="" className='loginForm' autoComplete="off">
+            <form className='loginForm' autoComplete="off">
                 <div style={{ display: 'flex', flexDirection: 'column' }} className='myinp'>
                     <div><img style={{ width: '20px' }} src={userLogo} alt="" /></div>
-                    <input type="text" name="user_id" id="" placeholder='User name or Email' value={loginValues.user_id} onChange={(e) => handleChange(e)} />
-                    <p>{formErrors.user_id}</p>
+                    <input type="text" name="user_id" id="" placeholder='User name or Email' value={formik.values.user_id} onBlur={formik.handleBlur} onChange={formik.handleChange} />
+                    {formik.touched.user_id && formik.errors.user_id ? <div style={{position:'relative', color: "red" }}>{formik.errors.user_id}</div> : null}
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column' }} className='myinp'>
                     <div><img style={{ width: '20px' }} src={passLogo} alt="" /></div>
-                    <input id='password_input' type="password" name="password" placeholder='Password' value={loginValues.password} onChange={(e) => handleChange(e)} />
-                    <p>{formErrors.password}</p>
+                    <input id='password_input' type="password" name="password" placeholder='Password' value={formik.values.password} onBlur={formik.handleBlur} onChange={formik.handleChange} />
+                    {formik.touched.password && formik.errors.password ? <div style={{position:'relative', color: "red" }}>{formik.errors.password}</div> : null}
                 </div>
 
                 <div className='buttonDiv'>
-                    <button onClick={(e) => handleLogin(e)}>Sign in</button>
+                    <button type='submit' onClick={(e) => handleLogin(e)}>Sign in</button>
                 </div>
                 <Link to='/register'>Register</Link>
             </form>
-
         </div>
     )
 }

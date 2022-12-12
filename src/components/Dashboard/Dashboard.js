@@ -1,12 +1,15 @@
 
 import React from 'react'
 import './dashboard.css'
-import { useParams } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 
 const Dashboard = () => {
-    const myresdata=useParams().resdata
-    console.log('message',{myresdata})
+    
+    //extracting using object destructuring data passed from login or register page
+    const location = useLocation()
+    const {full_name,user_name,country_row_id,email_id,mobile_number,referral_id}=location.state
+
     return (
         <div>
             <Helmet>
@@ -26,12 +29,12 @@ const Dashboard = () => {
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Saeb Alam</td>
-                        <td>alam_sa</td>
-                        <td>India</td>
-                        <td>test@test.com</td>
-                        <td>9876543210</td>
-                        <td>BCDT456YT</td>
+                        <td>{full_name}</td>
+                        <td>{user_name}</td>
+                        <td>{country_row_id}</td>
+                        <td>{email_id}</td>
+                        <td>{mobile_number}</td>
+                        <td>{referral_id}</td>
                     </tr>
                     
                 </tbody>
@@ -41,5 +44,3 @@ const Dashboard = () => {
 }
 
 export default Dashboard
-
-

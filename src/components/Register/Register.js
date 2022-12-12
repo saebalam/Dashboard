@@ -1,73 +1,100 @@
-import React, { useState, useEffect } from 'react'
+
+import React from 'react'
 import './register.css'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { useFormik } from 'formik'
 import { Helmet } from 'react-helmet'
 
-const Register = () => {
+const validate = values => {
+    const errors = {};
 
-    const [registerValues, setRegisterValues] = useState(
-        {
-            'full_name': '',
+    if (!values.full_name) {
+        errors.full_name = 'Fullname is required';
+    }else if(!/^[a-zA-Z]{4,}$/i.test(values.full_name)){
+        errors.full_name = 'Cannot be less than 4 characters';
+    }
+    if (!values.username) {
+        errors.username = 'Username is required';
+    }
+    if (!values.country_row_id) {
+        errors.country_row_id = 'Country is required';
+    }
+    if (!values.mobile_number) {
+        errors.mobile_number = 'Mobile number is required';
+    }else if (!/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/i.test(values.mobile_number)) {
+        errors.mobile_number = 'Invalid Mobile number';
+    }
+    if (!values.email_id) {
+        errors.email_id = 'email id is required';
+    }else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email_id)) {
+        errors.email_id = 'Invalid Email';
+    }
+    if (!values.password) {
+        errors.password = 'Password cannot be empty'
+    }else if (!/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,25}$/i.test(values.password)) {
+        errors.password = 'Password must meet minimum criteria';
+    }
+
+    return errors;
+};
+
+const Register = () => {
+    const navigate = useNavigate()
+
+    const formik = useFormik({
+        initialValues: {
+            'full_name': "",
             "username": "",
             "referral_id": "",
             "email_id": "",
             "country_row_id": "",
             "mobile_number": "",
             "password": ""
+        },
+        validate,
+        onSubmit: values => {
+            alert(JSON.stringify(values, null, 2))
         }
-    )
+    })
 
-    const [formErrors, setFormErrors] = useState({})
-    const [isSubmit, setIsSubmit] = useState(false)
-
-    const handleChange = (e) => {
-        console.log({ ...registerValues, [e.target.name]: e.target.value })
-        setRegisterValues({ ...registerValues, [e.target.name]: e.target.value })
-    }
-
-    const validate = (values) => {
-        const errors = {}
-        const passRegex = new RegExp('^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$');
-        const mobRegex = new RegExp('^[789]\d{9}$')
-        const EmailRegex = new RegExp('^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$')
-
-        if (!values.full_name) {
-            errors.full_name = "can't be empty"
-        } 
-        if (!values.username) {
-            errors.username = "Please provide user name"
-        } 
-
-        if (!values.country_row_id) {
-            errors.country_row_id = "can't be empty"
-        }
-
-        if (!values.mobile_number) {
-            errors.mobile_number = "Number can't be empty"
-        } 
-        if (!values.email_id) {
-            errors.email_id = 'email required'
-        } 
-
-        if (!values.password) {
-            errors.password = 'password required'
-        } 
-
-        return errors
-    }
-
+    //handling form submission
     const handleRegister = (e) => {
         e.preventDefault()
-        setFormErrors(validate(registerValues))
-        setIsSubmit(true)
-        // axios.post()
-    }
+        const data = {
+            'full_name': formik.values.full_name,
+            "username": formik.values.username,
+            "referral_id": formik.values.referral_id,
+            "email_id": formik.values.email_id,
+            "country_row_id": formik.values.country_row_id,
+            "mobile_number": formik.values.mobile_number,
+            "password": formik.values.password
+        }
+        axios.post('https://lobster-app-ddwng.ondigitalocean.app/user/register', data, { headers: { api_key: 'Z9Q7WKEY7ORGBUFGN3EG1QS5Y7FG8DU29GHKKSZH' } })
+            .then(res => {
+                console.log('register res', res)
 
-    const password_criteria = <div style={{ display: 'text', flexDirection: 'column', alignItems: 'flex-start', paddingLeft: '10px' }}>
-        <p >* Must contain 8 characters</p>
-        <p >* Atleast 1 letter and 1 number</p>
-        <p >* Atleast 1 special character</p></div>
+                if (res.status == 200) {
+                    console.log('res', res)
+                    // localStorage.setItem('token',res.data.message.token)
+                    if (res.data.status == true) {
+                        navigate("/dashboard", {
+                            state: {
+                                'full_name': res.data.message.full_name,
+                                'user_name': res.data.message.username,
+                                'country_row_id': res.data.message.country_row_id,
+                                'email_id': res.data.message.email_id,
+                                'mobile_number': res.data.message.mobile_number,
+                                'referral_id': res.data.message.referral_username,
+                            }
+                        });
+                    } else {
+                        alert(res.data.message.username)
+                    }
+
+                }
+            })
+    }
 
     return (
         <div className='registerContainer'>
@@ -80,19 +107,25 @@ const Register = () => {
             </div>
 
             <form action="" className='registerForm' autoComplete="off">
-                <input type="text" name="full_name" id="" placeholder='Full name *' value={registerValues.full_name} onChange={(e) => handleChange(e)} />
-                <p>{formErrors.full_name}</p>
-                <input type="text" name="username" id="" placeholder='User name *' value={registerValues.username} onChange={(e) => handleChange(e)} />
-                <p>{formErrors.username}</p>
-                <input type="text" name="country_row_id" id="" placeholder='Select country *' value={registerValues.country_row_id} onChange={(e) => handleChange(e)} />
-                <p>{formErrors.country_row_id}</p>
-                <input type="text" name="mobile_number" id="" placeholder='Mobile Number *' value={registerValues.mobile_number} onChange={(e) => handleChange(e)} />
-                <p>{formErrors.mobile_number}</p>
-                <input type="email" name="email_id" id="" placeholder='Email ID *' value={registerValues.email_id} onChange={(e) => handleChange(e)} />
-                <p>{formErrors.email_id}</p>
-                <input type="password" name="password" id="" placeholder='Password *' value={registerValues.password} onChange={(e) => handleChange(e)} />
-                <p>{formErrors.password}</p>
-                <input type="text" name="referral_id" id="" placeholder='Referral ID' value={registerValues.referral_id} onChange={(e) => handleChange(e)} />
+                <input type="text" name="full_name" id="" placeholder='Full name *' value={formik.values.full_name} onBlur={formik.handleBlur} onChange={formik.handleChange} />
+                {formik.touched.full_name && formik.errors.full_name ? <div style={{ position: 'relative', color: "red" }}>{formik.errors.full_name}</div> : null}
+
+                <input type="text" name="username" id="" placeholder='User name *' value={formik.values.username} onBlur={formik.handleBlur} onChange={formik.handleChange} />
+                {formik.touched.username && formik.errors.username ? <div style={{ position: 'relative', color: "red" }}>{formik.errors.username}</div> : null}
+
+                <input type="text" name="country_row_id" id="" placeholder='Select country *' value={formik.values.country_row_id} onBlur={formik.handleBlur} onChange={formik.handleChange} />
+                {formik.touched.country_row_id && formik.errors.country_row_id ? <div style={{ position: 'relative', color: "red" }}>{formik.errors.country_row_id}</div> : null}
+                
+                <input type="text" name="mobile_number" id="" placeholder='10 digit Mobile Number *' value={formik.values.mobile_number} onBlur={formik.handleBlur} onChange={formik.handleChange} />
+                {formik.touched.mobile_number && formik.errors.mobile_number ? <div style={{ position: 'relative', color: "red" }}>{formik.errors.mobile_number}</div> : null}
+                
+                <input type="email" name="email_id" id="" placeholder='Email ID *' value={formik.values.email_id} onBlur={formik.handleBlur} onChange={formik.handleChange} />
+                {formik.touched.email_id && formik.errors.email_id ? <div style={{ position: 'relative', color: "red" }}>{formik.errors.email_id}</div> : null}
+                
+                <input type="password" name="password" id="" placeholder='Password *' maxLength='25' value={formik.values.password} onBlur={formik.handleBlur} onChange={formik.handleChange} />
+                {formik.touched.password && formik.errors.password ? <div style={{ position: 'relative', color: "red" }}>{formik.errors.password}</div> : null}
+                
+                <input type="text" name="referral_id" id="" placeholder='Referral ID' disabled='true' value={formik.values.referral_id} onBlur={formik.handleBlur} onChange={formik.handleChange} />
 
                 <button onClick={(e) => handleRegister(e)}>Register</button>
                 <Link to='/'>Back to login</Link>
@@ -103,5 +136,3 @@ const Register = () => {
 }
 
 export default Register
-
-
